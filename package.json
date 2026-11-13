@@ -1,0 +1,13 @@
+{
+  "name": "jeitinhovibe",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The Jeitinho Vibe landing page. Small software. Big vibes.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.158.0"
+  }
+}
