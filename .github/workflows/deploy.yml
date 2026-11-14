@@ -51,17 +51,18 @@ jobs:
       - name: Smoke test the live site
         run: |
           url=https://jeitinhovibe.online
+          ua="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
           code=000
           for attempt in 1 2 3 4 5; do
-            code=$(curl -s -o /dev/null -w '%{http_code}' "$url/")
+            code=$(curl -sS --http1.1 --max-time 20 -A "$ua" -D /tmp/site.headers -o /dev/null -w '%{http_code}' "$url/")
             [ "$code" = "200" ] && break
             sleep 10
           done
           echo "GET / -> $code"
-          [ "$code" = "200" ] || exit 1
+          [ "$code" = "200" ] || { cat /tmp/site.headers || true; exit 1; }
 
           for path in /styles.css /app.js /assets/projects/footnotes.webp; do
-            code=$(curl -s -o /dev/null -w '%{http_code}' "$url$path")
+            code=$(curl -sS --http1.1 --max-time 20 -A "$ua" -o /dev/null -w '%{http_code}' "$url$path")
             echo "GET $path -> $code"
             [ "$code" = "200" ] || exit 1
           done
