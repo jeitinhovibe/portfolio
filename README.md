@@ -38,6 +38,7 @@ Useful media classes:
 | `.media-phone` | tall phone screenshots (it crops the bottom like a phone peeking out) |
 | `.media-contained` | screenshots with transparent margins, shown on a dotted mat |
 | `.media-photo` | photo-led cards with a round sticker in the corner |
+| `.media-footnotes` | the Footnotes risograph collage |
 | `.media-poster` | illustration or poster art |
 
 ## Run it locally
@@ -49,7 +50,11 @@ npm run dev
 
 ## Deploy
 
-The Worker is bound to `jeitinhovibe.online` as a custom domain, on the Jeitinho Vibe Cloudflare account.
+Every push to `main` deploys automatically through GitHub Actions (`.github/workflows/deploy.yml`). Pull requests get a Cloudflare preview at `pr-<number>.jeitinhovibe.online`.
+
+The Worker is bound to `jeitinhovibe.online` as a custom domain, on the Jeitinho Vibe Cloudflare account. The workflow needs a `CLOUDFLARE_API_TOKEN` repository secret with Workers Scripts, Workers Routes and Zone read permissions.
+
+To deploy manually (useful if Actions is down):
 
 ```sh
 npm run deploy
@@ -57,6 +62,6 @@ npm run deploy
 
 ## Credits
 
-Logo: ours. Yes, the dog is the boss. Project screenshots are from the projects themselves. Fonts: Baloo 2, Space Grotesk and Space Mono, served by Google Fonts.
+Logo: ours. Yes, the dog is the boss. Project screenshots are from the projects themselves. Fonts: Baloo 2, Fraunces, Space Grotesk and Space Mono, served by Google Fonts.
 
 © Jeitinho Vibe. No rights reserved. We're not lawyers.

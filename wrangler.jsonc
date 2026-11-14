@@ -8,9 +8,14 @@
   "routes": [
     {
       "pattern": "jeitinhovibe.online",
-      "custom_domain": true
+      "custom_domain": true,
+      // Per-PR previews get <preview>.jeitinhovibe.online, with the wildcard
+      // DNS record and certificate created by Cloudflare.
+      "previews_enabled": true
     }
   ],
+  // Enables `wrangler preview`, used by the shared PR-preview workflow.
+  "previews": {},
   "assets": {
     "directory": "./public",
     "not_found_handling": "single-page-application"

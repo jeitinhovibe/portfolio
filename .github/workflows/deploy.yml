@@ -1,0 +1,90 @@
+name: Deploy site
+
+# Publishes the static site to Cloudflare Workers (static assets):
+#   main        -> https://jeitinhovibe.online
+#   pull request -> https://pr-<number>.jeitinhovibe.online
+#
+# The site is files only — no server code — so wrangler uploads ./public
+# directly. Previews use the shared org workflow and Cloudflare Previews.
+#
+# Secret (repo settings): CLOUDFLARE_API_TOKEN with Workers Scripts, Workers
+# Routes and Zone read. Fork PRs are skipped — they do not get the secrets.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: deploy-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  deploy:
+    name: Deploy main
+    if: >-
+      github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Deploy to Cloudflare
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          wranglerVersion: "4"
+          command: deploy
+
+      - name: Smoke test the live site
+        run: |
+          url=https://jeitinhovibe.online
+          code=000
+          for attempt in 1 2 3 4 5; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$url/")
+            [ "$code" = "200" ] && break
+            sleep 10
+          done
+          echo "GET / -> $code"
+          [ "$code" = "200" ] || exit 1
+
+          for path in /styles.css /app.js /assets/projects/footnotes.webp; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$url$path")
+            echo "GET $path -> $code"
+            [ "$code" = "200" ] || exit 1
+          done
+
+  preview:
+    name: Deploy PR preview
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action != 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    uses: jeitinhovibe/.github/.github/workflows/pr-preview.yml@main
+    with:
+      profile: stateless
+      note: "Deployed from this pull request's assets."
+    secrets: inherit
+
+  cleanup-preview:
+    name: Remove PR preview
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    uses: jeitinhovibe/.github/.github/workflows/pr-preview.yml@main
+    with:
+      profile: stateless
+    secrets: inherit

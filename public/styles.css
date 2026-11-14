@@ -547,6 +547,18 @@ a { color: inherit; }
 .card:hover .media img.photo-sticker { transform: rotate(-6deg) scale(1.06); }
 .earbuds { display: none; }
 
+/* Footnotes — a risograph zine inside the collection */
+.media-footnotes { background: #f6efe1; }
+.media-footnotes img { object-fit: cover; }
+.card-footnotes .card-heading h3 {
+  font-family: "Fraunces", "Baloo 2", serif;
+  font-weight: 900;
+  font-size: clamp(1.9rem, 2.7vw, 2.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+.card-footnotes .spec { color: #b93b1b; }
+
 /* poster card */
 .media-poster { background: var(--yellow); }
 .media-poster img { object-fit: cover; }
