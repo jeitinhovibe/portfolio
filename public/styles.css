@@ -502,6 +502,58 @@ a { color: inherit; }
     #14261f;
 }
 
+/* Encore — three screens from the same show */
+.media-encore {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2%;
+  padding: 22px 16px 0;
+  background:
+    radial-gradient(rgba(30, 35, 80, 0.16) 1.2px, transparent 1.2px) 0 0 / 22px 22px,
+    var(--accent-soft);
+  isolation: isolate;
+}
+.media-encore::before,
+.media-encore::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.media-encore::before {
+  width: 150px;
+  height: 150px;
+  left: -48px;
+  top: -48px;
+  background: #d3452c;
+  opacity: 0.9;
+}
+.media-encore::after {
+  width: 120px;
+  height: 120px;
+  right: -34px;
+  bottom: -40px;
+  background: #e0aa34;
+  opacity: 0.9;
+}
+.media-encore img {
+  position: relative;
+  z-index: 1;
+  width: 30%;
+  height: auto;
+  max-height: none;
+  object-position: top center;
+  border: 3px solid var(--navy);
+  border-radius: 18px;
+  box-shadow: 5px 5px 0 rgba(30, 35, 80, 0.82);
+  transform-origin: top center;
+}
+.media-encore .shot-setup { rotate: -4deg; translate: 0 14px; }
+.media-encore .shot-bill { width: 32%; z-index: 2; rotate: 0.5deg; translate: 0 2px; }
+.media-encore .shot-premiere { rotate: 4deg; translate: 0 14px; }
+
 /* contained screenshots on a coloured mat */
 .media-contained {
   display: grid;

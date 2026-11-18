@@ -13,7 +13,7 @@ public/
   app.js              scroll reveals and the idea machine
   assets/
     logo.webp         the mascot
-    projects/         one image per project
+    projects/         one image (or a small set) per project
 wrangler.jsonc        Cloudflare Worker with static assets + custom domain
 ```
 
@@ -36,6 +36,7 @@ Useful media classes:
 |---|---|
 | `.media-wide` | the full-width featured card |
 | `.media-phone` | tall phone screenshots (it crops the bottom like a phone peeking out) |
+| `.media-encore` | the three-phone Encore triptych |
 | `.media-contained` | screenshots with transparent margins, shown on a dotted mat |
 | `.media-photo` | photo-led cards with a round sticker in the corner |
 | `.media-footnotes` | the Footnotes risograph collage |
